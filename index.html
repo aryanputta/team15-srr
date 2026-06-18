@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Team 15 SRR — Section 1.5.4 CDH Subsystem</title>
+<title>Team 15 SRR - Section 1.5.4 CDH Subsystem</title>
 <style>
 :root {
       --ink: #1c1c1e;
@@ -185,9 +185,13 @@
       body { background: white; padding: 0; }
       .document { border: none; box-shadow: none; }
     }
-.fig { margin: 20px 0 8px; border:1px solid var(--rule); background:var(--page); padding:18px 18px 8px; }
-.figcap { font-family:'Helvetica Neue',Arial,sans-serif; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.07em; margin-top:6px; }
+.fig { margin: 20px 0 8px; border:1px solid var(--rule); background:var(--page); padding:18px 18px 10px; }
+.fig .mermaid { display:flex; justify-content:center; }
+.figcap { font-family:'Helvetica Neue',Arial,sans-serif; font-size:11px; color:var(--muted); line-height:1.5; margin-top:10px; }
 .figcap b { color:var(--accent); }
+.sel { font-family:'Helvetica Neue',Arial,sans-serif; font-weight:700; color:#0a5c34; font-size:11px; }
+.elim { color:var(--muted); font-size:12px; }
+tr.selrow td { background:#eef6f0; }
 .subnav a { color:var(--accent); text-decoration:none; font-size:12px; font-family:'Helvetica Neue',Arial; }
 </style>
 </head>
@@ -197,14 +201,14 @@
     <div class="doc-meta">
       <div class="doc-id">
         Mission: L'SPACE MCA SU26<br>
-        Team: Team 15 (Nova 15) — Engineering<br>
-        Section: 1.5.4 — Command and Data Handling<br>
-        Discipline: CDH Engineering Lead (A. Putta)
+        Team: Team 15 (Nova 15) - Engineering<br>
+        Section: 1.5.4 - Command and Data Handling<br>
+        Discipline: CDH Engineering Lead
       </div>
       <div class="doc-status">Review Ready</div>
     </div>
     <div class="doc-title">NASA L'SPACE System Requirements Review</div>
-    <div class="doc-heading">Section 1.5.4 — CDH Subsystem</div>
+    <div class="doc-heading">Section 1.5.4 - CDH Subsystem</div>
     <div class="doc-sub">Lunar South Pole / PSR Environmental Characterization Mission &#183; Lander + Compact Rover</div>
   </div>
 
@@ -212,133 +216,122 @@
 
     <div class="section">
       <div class="section-heading">1.5.4.1 &nbsp; CDH Subsystem Overview</div>
-      <p>The command and data handling (CDH) subsystem provides the command authority, onboard autonomy, telemetry management, science-data storage, and communications interface for the mission. It receives and validates commands from Earth, executes onboard sequences, time-tags the dust, temperature, luminescence, and radiation measurements that make up the primary science return, manages onboard storage of that data, generates telemetry, and routes data to the communications path for return to Earth or to a lunar relay orbiter (NASA 2016). The subsystem hosts the flight software that maintains spacecraft state and preserves command execution through cruise, descent, surface checkout, and permanently shadowed region (PSR) operations, while supporting low-power safe mode and autonomous fault response when real-time command is unavailable (NASA 2009).</p>
-      <p>Because the lander retains a direct line of sight to Earth at the landing site, near 83.21 degrees south and 203.775 degrees east, while the rover loses that line of sight inside the PSR, the governing design drivers are radiation-driven upset risk in the avionics, intermittent communications, and the need to protect buffered data until a contact window opens. The command and data path is shown in Figure 1.</p>
-      <div class="fig"><svg viewBox="0 0 720 430" width="100%" role="img" aria-label="CDH command and data flow">
-  <defs>
-    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#0a2d6e"/></marker>
-    <style>.b{fill:#f0f3fa;stroke:#0a2d6e;stroke-width:1.2}.bb{fill:#0a2d6e}.t{font-family:Helvetica Neue,Arial;font-size:11px;fill:#1c1c1e}.tw{font-family:Helvetica Neue,Arial;font-size:11px;fill:#fff}.l{stroke:#0a2d6e;stroke-width:1.2;fill:none}.lbl{font-family:Courier New;font-size:9px;fill:#777}</style>
-  </defs>
-  <rect class="bb" x="250" y="10" width="220" height="34" rx="3"/><text class="tw" x="360" y="31" text-anchor="middle">Ground Station / Relay Orbiter</text>
-  <path class="l" marker-end="url(#arr)" d="M360,44 L360,72"/><text class="lbl" x="368" y="60">uplink: CCSDS / Proximity-1</text>
-  <rect class="b" x="250" y="74" width="220" height="32" rx="3"/><text class="t" x="360" y="94" text-anchor="middle">Communications Subassembly (Rx)</text>
-  <path class="l" marker-end="url(#arr)" d="M360,106 L360,132"/>
-  <rect class="b" x="210" y="134" width="300" height="32" rx="3"/><text class="t" x="360" y="154" text-anchor="middle">Command Decode &#8594; Validate &#8594; Sequence</text>
-  <path class="l" marker-end="url(#arr)" d="M360,166 L360,192"/>
-  <rect class="b" x="250" y="194" width="220" height="40" rx="3"/><text class="t" x="360" y="210" text-anchor="middle">Flight Computer</text><text class="lbl" x="360" y="226" text-anchor="middle" fill="#444">state mgmt &#183; fault mgmt</text>
-  <path class="l" marker-end="url(#arr)" d="M250,214 L120,214 L120,250"/><text class="lbl" x="60" y="208">internal data bus</text>
-  <rect class="b" x="20" y="252" width="200" height="32" rx="3"/><text class="t" x="120" y="272" text-anchor="middle">Subsystems / Instruments</text>
-  <path class="l" marker-end="url(#arr)" d="M120,284 L120,312"/>
-  <rect class="b" x="20" y="314" width="200" height="40" rx="3"/><text class="t" x="120" y="330" text-anchor="middle">Onboard Data Storage</text><text class="lbl" x="120" y="346" text-anchor="middle" fill="#444">buffer &#183; priority classes</text>
-  <path class="l" marker-end="url(#arr)" d="M220,334 L470,334 L470,360"/><text class="lbl" x="300" y="328">priority retrieval</text>
-  <rect class="b" x="250" y="362" width="220" height="32" rx="3"/><text class="t" x="360" y="382" text-anchor="middle">Telemetry Encoder &#8594; Tx</text>
-  <path class="l" marker-end="url(#arr)" d="M470,378 L560,378 L560,27 L470,27"/><text class="lbl" x="500" y="200">downlink &#8804;48h</text>
-</svg><div class="figcap"><b>Figure 1.</b> CDH command and data flow. Commands enter via CCSDS / Proximity-1, are validated before execution, and science data is buffered under a priority policy and downlinked within the 48-hour target.</div></div>
+      <p>The command and data handling (CDH) subsystem provides the command authority, onboard autonomy, telemetry management, science-data storage, and communications interface for the mission. It receives and validates commands from Earth, executes onboard sequences, time-tags the dust, temperature, luminescence, and radiation measurements that make up the primary science return, manages onboard storage, generates telemetry, and routes data to the communications path for return to Earth or to a lunar relay orbiter (NASA 2016). The subsystem hosts the flight software that maintains spacecraft state and preserves command execution through cruise, descent, surface checkout, and permanently shadowed region (PSR) operations, while supporting low-power safe mode and autonomous fault response when real-time command is unavailable (NASA 2009).</p>
+      <p>The landing site lies at 83.21 degrees south and 203.775 degrees east, on a 4.75 degree slope a few hundred meters from a PSR with a 13.55 degree crater wall (Christensen et al. 2026, via JMARS). Because the lander retains a direct line of sight to Earth at the landing site while the rover loses that line of sight inside the PSR, the governing design drivers are radiation-driven upset risk in the avionics, intermittent communications, and the need to protect buffered data until a contact window opens. The command and data path is shown in Figure 1.</p>
+      <div class="fig"><pre class="mermaid">flowchart TD
+  GS["Ground Station / Relay Orbiter"]
+  subgraph AV["Onboard Avionics Boundary"]
+    direction TB
+    RX["Comms Interface (Rx / Tx)"]
+    CMD["Command Decode - Validate - Sequence"]
+    FC["Flight Computer<br/>state and fault management"]
+    BUS{{"Internal Data Bus"}}
+    INST["Subsystems / Instruments"]
+    STO[("Onboard Storage<br/>buffer + priority classes")]
+    TLM["Telemetry Encoder"]
+  end
+  GS -. "uplink: CCSDS / Proximity-1" .-> RX
+  RX --> CMD --> FC
+  FC --- BUS
+  BUS --- INST
+  INST --> STO
+  STO --> TLM
+  FC --> TLM
+  TLM -. "downlink within 48 h" .-> GS
+  classDef ext fill:#e2e8f0,stroke:#64748b,color:#1e293b;
+  classDef core fill:#0f2747,stroke:#0f2747,color:#f1f5f9;
+  classDef node fill:#334155,stroke:#1e293b,color:#f1f5f9;
+  classDef store fill:#1e293b,stroke:#0f2747,color:#e2e8f0;
+  class GS ext;
+  class FC,CMD core;
+  class RX,BUS,INST,TLM node;
+  class STO store;
+  style AV fill:#f8fafc,stroke:#94a3b8,color:#475569;</pre><div class="figcap"><b>Figure 1.</b> CDH command and data flow. Commands enter over RF (dashed) and are validated before execution; instrument data crosses the internal data bus (solid), is buffered under a priority policy, and is downlinked within the 48-hour requirement.</div></div>
       <div class="subsection">
-        <div class="subsection-heading">Technology Readiness</div>
-        <p>Hardware subassemblies rate TRL 6 to 7 on small-spacecraft and CubeSat-class lunar heritage; the mission-specific flight software is TRL 5 because its integrated fault-management and autonomy configuration is not yet validated in a relevant environment. The overall subsystem TRL is set by the least mature element, fixing it at TRL 5 (NASA 2018).</p>
-        <table class="compact"><thead><tr><th>Subassembly</th><th>Mass (kg)</th><th>Dims (m)</th><th>Max Power (W)</th><th>TRL</th></tr></thead><tbody>
-        <tr><td class="criterion">Flight Computer / Processing</td><td>TBR</td><td>TBR</td><td>TBR</td><td>6</td></tr>
-        <tr><td class="criterion">Data Storage</td><td>TBR</td><td>TBR</td><td>TBR</td><td>6</td></tr>
-        <tr><td class="criterion">Communications (CDH interface)</td><td>TBR</td><td>TBR</td><td>TBR</td><td>7</td></tr>
-        <tr><td class="criterion">Internal Data Bus</td><td>TBR</td><td>TBR</td><td>TBR</td><td>7</td></tr>
-        <tr><td class="criterion">Flight Software Architecture</td><td>TBR</td><td>TBR</td><td>TBR</td><td>5</td></tr>
-        <tr><td class="criterion">Total Subsystem</td><td>TBR</td><td>TBR</td><td>TBR</td><td>5</td></tr>
+        <div class="subsection-heading">Subsystem Mass, Volume, Power, and Technology Readiness</div>
+        <p>Values below are flight-heritage estimates for SmallSat and CubeSat-class lunar avionics. Hardware rates TRL 6 to 7; the mission-specific flight software is TRL 5 because its integrated fault-management and autonomy configuration is not yet validated in a relevant environment, which sets the subsystem at TRL 5 (NASA 2018).</p>
+        <table class="compact"><thead><tr><th>Subassembly</th><th>Mass (kg)</th><th>Dimensions (m)</th><th>Max Power (W)</th><th>TRL</th></tr></thead><tbody>
+        <tr><td class="criterion">Flight Computer / Processing</td><td>0.5</td><td>0.10 x 0.10 x 0.03</td><td>8</td><td>6</td></tr>
+        <tr><td class="criterion">Data Storage (NV, EDAC)</td><td>0.3</td><td>0.09 x 0.09 x 0.02</td><td>3</td><td>6</td></tr>
+        <tr><td class="criterion">CDH Communications Interface</td><td>0.4</td><td>0.09 x 0.09 x 0.02</td><td>5</td><td>7</td></tr>
+        <tr><td class="criterion">Internal Data Bus / Controller</td><td>0.4</td><td>0.05 x 0.05 x 0.02</td><td>2</td><td>7</td></tr>
+        <tr><td class="criterion">Flight Software (hosted)</td><td>&#8212;</td><td>hosted on FC</td><td>&#8212;</td><td>5</td></tr>
+        <tr class="selrow"><td class="criterion">Total Subsystem</td><td>1.6</td><td>&#8804; 0.20 x 0.15 x 0.10 stowed</td><td>18 (20 w/ margin)</td><td>5</td></tr>
         </tbody></table>
       </div>
     </div>
 
     <div class="section">
       <div class="section-heading">1.5.4.2 &nbsp; CDH Subsystem Requirements</div>
-      <p>The requirements below are written as measurable shall statements, each traced to a parent mission requirement from Section 1.4 and assigned a verification method. Parents are the survival requirement SYS-1, the mass requirement SYS-2, the communication requirements CH-1 and CH-1.1, the energy requirements SYS-4 and ELEC-1, and the science requirements SCI-1, SCI-2, and SCI-3. The traceability is shown in Figure 2. The radiation requirement CDH-05 is engineering-derived, since the mission requirements specify no total ionizing dose; its 30 krad (Si) threshold carries roughly six times margin over the 3.6 to 4.8 krad expected at the site (Phipps et al. 2024). The downlink target of CDH-06 is an engineering-derived 48 hours, verified by the mission latency simulation.</p>
-      <div class="fig"><svg viewBox="0 0 720 300" width="100%" role="img" aria-label="requirements traceability">
-  <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#777"/></marker>
-  <style>.m{fill:#0a2d6e;font-family:Helvetica Neue,Arial;font-size:11px}.c{fill:#1c1c1e;font-family:Courier New;font-size:11px}.box{fill:#f0f3fa;stroke:#0a2d6e;stroke-width:1}.boxc{fill:#fff;stroke:#9bb0d6;stroke-width:1}.ln{stroke:#9bb0d6;stroke-width:1;fill:none}</style></defs>
-  <text class="m" x="20" y="24" font-weight="700">MCR Mission Requirements</text>
-  <text class="m" x="430" y="24" font-weight="700">CDH Requirements</text>
-  <rect class="box" x="20" y="40" width="150" height="28" rx="3"/><text class="c" x="32" y="59">SYS-1 survive cycle</text><rect class="box" x="20" y="80" width="150" height="28" rx="3"/><text class="c" x="32" y="99">SYS-2 mass <=250kg</text><rect class="box" x="20" y="120" width="150" height="28" rx="3"/><text class="c" x="32" y="139">CH-1 / CH-1.1 comms</text><rect class="box" x="20" y="160" width="150" height="28" rx="3"/><text class="c" x="32" y="179">SCI-1/2/3 science</text><rect class="box" x="20" y="200" width="150" height="28" rx="3"/><text class="c" x="32" y="219">SYS-4 / ELEC-1 power</text><rect class="boxc" x="430" y="40" width="270" height="20" rx="3"/><text class="c" x="440" y="54">CDH-04 safe mode &#8592; SYS-1</text><rect class="boxc" x="430" y="66" width="270" height="20" rx="3"/><text class="c" x="440" y="80">CDH-05 30 krad (derived) &#8592; SYS-1</text><rect class="boxc" x="430" y="92" width="270" height="20" rx="3"/><text class="c" x="440" y="106">CDH-07 state &#8592; SYS-1</text><rect class="boxc" x="430" y="118" width="270" height="20" rx="3"/><text class="c" x="440" y="132">CDH-09 SEU &#8592; CDH-04</text><rect class="boxc" x="430" y="144" width="270" height="20" rx="3"/><text class="c" x="440" y="158">CDH-02 storage &#8592; CH-1.1</text><rect class="boxc" x="430" y="170" width="270" height="20" rx="3"/><text class="c" x="440" y="184">CDH-06 48h downlink &#8592; CDH-02</text><rect class="boxc" x="430" y="196" width="270" height="20" rx="3"/><text class="c" x="440" y="210">CDH-03 cmd valid &#8592; CH-1</text><rect class="boxc" x="430" y="222" width="270" height="20" rx="3"/><text class="c" x="440" y="236">CDH-08 CCSDS/Prox-1 &#8592; CDH-03</text><rect class="boxc" x="430" y="248" width="270" height="20" rx="3"/><text class="c" x="440" y="262">CDH-01 time-tag &#8592; SCI-1/2</text>
-  <path class="ln" marker-end="url(#a2)" d="M170,54 L430,50"/>
-  <path class="ln" marker-end="url(#a2)" d="M170,134 L430,180"/>
-  <path class="ln" marker-end="url(#a2)" d="M170,174 L430,258"/>
-</svg><div class="figcap"><b>Figure 2.</b> CDH requirements traceability to the submitted MCR requirement tree (SYS, CH, SCI, ELEC). Internal decomposition: CH-1.1 &#8594; CDH-02 &#8594; CDH-06; CH-1 &#8594; CDH-03 &#8594; CDH-08; SYS-1 &#8594; CDH-04 &#8594; CDH-09.</div></div>
+      <p>Each requirement is a measurable shall statement traced to a parent mission requirement from Section 1.4 and assigned a verification method. The radiation requirement CDH-05 is engineering-derived, since the mission requirements specify no total ionizing dose; its 30 krad (Si) threshold carries roughly six times margin over the 3.6 to 4.8 krad expected at the site from the JMARS crater-rim shielding geometry and the published dose maps (Phipps et al. 2024). Traceability is shown in Figure 2.</p>
+      <table class="compact"><thead><tr><th style="width:9%">ID</th><th style="width:13%">Parent</th><th>Shall Statement</th><th style="width:22%">Verification</th></tr></thead><tbody>
+      <tr><td class="criterion">CDH-01</td><td>SCI-1, SCI-2</td><td>Time-tag all science and engineering data to a common spacecraft clock with an accuracy of +/- 1 ms.</td><td>Test</td></tr>
+      <tr><td class="criterion">CDH-02</td><td>CH-1.1</td><td>Provide non-volatile storage retaining >= 336 h of full-rate data (>= 4 GB usable) without overwrite.</td><td>Analysis (JMARS contact geometry x data rate)</td></tr>
+      <tr><td class="criterion">CDH-03</td><td>CH-1</td><td>Validate every uplinked command for authentication, format, sequence, and timing before execution; reject and log non-conforming commands.</td><td>Test</td></tr>
+      <tr><td class="criterion">CDH-04</td><td>SYS-1</td><td>Autonomously detect defined faults and command entry to a defined safe mode without ground intervention.</td><td>Test + Demonstration</td></tr>
+      <tr><td class="criterion">CDH-05</td><td>SYS-1</td><td>Remain operable after a total ionizing dose of >= 30 krad (Si) over the 29.5-day mission.</td><td>Analysis (JMARS + Phipps 2024); Test later</td></tr>
+      <tr><td class="criterion">CDH-06</td><td>CDH-02</td><td>Retrieve and downlink buffered science data in priority order so all primary science returns within 48 h under nominal contact.</td><td>Analysis (JMARS contact-window schedule)</td></tr>
+      <tr><td class="criterion">CDH-07</td><td>SYS-1</td><td>Preserve critical spacecraft state across processor resets and safe-mode transitions.</td><td>Test</td></tr>
+      <tr><td class="criterion">CDH-08</td><td>CDH-03</td><td>Implement CCSDS Space Packet framing and Proximity-1 relay operation.</td><td>Inspection + Test</td></tr>
+      <tr><td class="criterion">CDH-09</td><td>CDH-04</td><td>Employ watchdog timing and memory EDAC to detect and recover from single-event upsets.</td><td>Test + Analysis</td></tr>
+      </tbody></table>
+      <div class="fig"><pre class="mermaid">flowchart LR
+  SYS1["SYS-1<br/>Survive 1 lunar cycle"]
+  CH1["CH-1<br/>Earth communication"]
+  CH11["CH-1.1<br/>Communication in PSR"]
+  SCI["SCI-1 / SCI-2<br/>Science measurements"]
+  SYS1 --> CDH04["CDH-04 Safe mode"] --> CDH09["CDH-09 Watchdog + EDAC"]
+  SYS1 --> CDH05["CDH-05 30 krad TID"]
+  SYS1 --> CDH07["CDH-07 State preservation"]
+  CH1 --> CDH03["CDH-03 Command validation"] --> CDH08["CDH-08 CCSDS / Proximity-1"]
+  CH11 --> CDH02["CDH-02 Storage >= 336 h"] --> CDH06["CDH-06 48 h downlink"]
+  SCI --> CDH01["CDH-01 Time-tag +/- 1 ms"]
+  classDef parent fill:#0f2747,stroke:#0f2747,color:#f1f5f9;
+  classDef child fill:#e2e8f0,stroke:#64748b,color:#1e293b;
+  class SYS1,CH1,CH11,SCI parent;
+  class CDH01,CDH02,CDH03,CDH04,CDH05,CDH06,CDH07,CDH08,CDH09 child;</pre><div class="figcap"><b>Figure 2.</b> Requirements traceability. Left-to-right decomposition mapping the nine CDH requirements to their parent mission requirements (SYS-1, CH-1, CH-1.1, SCI-1/2), with internal chains CH-1.1 to CDH-02 to CDH-06, CH-1 to CDH-03 to CDH-08, and SYS-1 to CDH-04 to CDH-09.</div></div>
     </div>
 
     <div class="section">
       <div class="section-heading">1.5.4.3 &nbsp; CDH Subsystem Trade Studies</div>
-      <p>Each architecture decision is scored against the Section 1.6 evaluation criteria using the percentage method, with weights summing to 100 percent and grades on a 0/1/5/10 scale. The communications architecture trade is decisive because the rover loses Earth line of sight in the PSR (CH-1.1). The relay-via-orbiter option is selected; the mission latency simulation confirms that direct-to-Earth meets the 48-hour target for only 59 percent of acquisitions while relay meets it for all of them (Figure 4).</p>
-      <div class="fig"><svg viewBox="0 0 720 146" width="100%" role="img" aria-label="Trade A">
-      <g transform="translate(0,0)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Direct-to-Earth Only</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="276" height="20" fill="#9bb0d6"/>
-        <text x="494" y="21" font-size="11" font-family="Courier New" fill="#444">60.10%</text>
-      </g>
-      <g transform="translate(0,42)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Relay-via-Orbiter &#9733; selected</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="363" height="20" fill="#0a2d6e"/>
-        <text x="581" y="21" font-size="11" font-family="Courier New" fill="#444">79.00%</text>
-      </g>
-      <g transform="translate(0,84)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Lander-as-Relay Hop</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="267" height="20" fill="#9bb0d6"/>
-        <text x="485" y="21" font-size="11" font-family="Courier New" fill="#444">58.00%</text>
-      </g>
-    </svg><div class="figcap"><b>Figure 3a.</b> Trade A — Communications architecture. Relay-via-orbiter selected (79.00%).</div></div>
-      <div class="fig"><svg viewBox="0 0 720 146" width="100%" role="img" aria-label="Trade B">
-      <g transform="translate(0,0)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Rad-Tolerant SBC + EDAC &#9733; selected</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="414" height="20" fill="#0a2d6e"/>
-        <text x="632" y="21" font-size="11" font-family="Courier New" fill="#444">90.00%</text>
-      </g>
-      <g transform="translate(0,42)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Fully Rad-Hardened</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="357" height="20" fill="#9bb0d6"/>
-        <text x="575" y="21" font-size="11" font-family="Courier New" fill="#444">77.60%</text>
-      </g>
-      <g transform="translate(0,84)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">COTS Commercial SBC</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="267" height="20" fill="#9bb0d6"/>
-        <text x="485" y="21" font-size="11" font-family="Courier New" fill="#444">58.00%</text>
-      </g>
-    </svg><div class="figcap"><b>Figure 3b.</b> Trade B — Flight computer. Radiation-tolerant SBC + EDAC selected (90.00%); meets the derived 30 krad requirement with margin while the COTS part fails radiation.</div></div>
-      <div class="fig"><svg viewBox="0 0 720 146" width="100%" role="img" aria-label="Trade C">
-      <g transform="translate(0,0)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Steerable High-Gain (HGA)</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="256" height="20" fill="#9bb0d6"/>
-        <text x="474" y="21" font-size="11" font-family="Courier New" fill="#444">55.70%</text>
-      </g>
-      <g transform="translate(0,42)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Body-Fixed Medium-Gain (MGA) &#9733; selected</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="412" height="20" fill="#0a2d6e"/>
-        <text x="630" y="21" font-size="11" font-family="Courier New" fill="#444">89.50%</text>
-      </g>
-      <g transform="translate(0,84)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Low-Gain (LGA) Omni</text>
-        <rect x="210" y="6" width="460" height="20" fill="#eef1f7"/>
-        <rect x="210" y="6" width="373" height="20" fill="#9bb0d6"/>
-        <text x="591" y="21" font-size="11" font-family="Courier New" fill="#444">81.10%</text>
-      </g>
-    </svg><div class="figcap"><b>Figure 3c.</b> Trade C — Rover antenna. Body-fixed medium-gain selected (89.50%); removes a pointing mechanism vulnerable to dust and 70 K cold.</div></div>
-      <div class="fig"><svg viewBox="0 0 720 150" width="100%" role="img" aria-label="latency"><g transform="translate(0,0)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">DTE only</text>
-        <rect x="150" y="6" width="420" height="20" fill="#eef1f7"/>
-        <rect x="150" y="6" width="248" height="20" fill="#c25b2e"/>
-        <text x="406" y="21" font-size="11" font-family="Courier New" fill="#444">59.1% meet &#8804;48h</text></g><g transform="translate(0,42)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Relay nominal</text>
-        <rect x="150" y="6" width="420" height="20" fill="#eef1f7"/>
-        <rect x="150" y="6" width="420" height="20" fill="#0a7d3a"/>
-        <text x="578" y="21" font-size="11" font-family="Courier New" fill="#444">100% meet &#8804;48h</text></g><g transform="translate(0,84)">
-        <text x="0" y="20" font-size="12" font-family="Helvetica Neue,Arial" fill="#1c1c1e">Relay degraded</text>
-        <rect x="150" y="6" width="420" height="20" fill="#eef1f7"/>
-        <rect x="150" y="6" width="369" height="20" fill="#c25b2e"/>
-        <text x="527" y="21" font-size="11" font-family="Courier New" fill="#444">87.9% meet &#8804;48h</text></g></svg><div class="figcap"><b>Figure 4.</b> Mission latency result (LunarLinkBench Monte Carlo, 20,000 samples). Fraction of acquisitions returned within the 48-hour target. Direct-to-Earth fails; relay meets the requirement.</div></div>
+      <p>Each decision is scored against the Section 1.6 evaluation criteria using the percentage method, with weights summing to 100 percent and grades on a 0/1/5/10 scale. The communications architecture trade is decisive because the rover loses Earth line of sight inside the PSR (CH-1.1); the JMARS geometry shows Earth is out of view for roughly 14 days of each 29.5-day cycle, which strands direct-to-Earth science (Figure 4).</p>
+      <p class="subsection-heading" style="margin-top:14px">Trade A - Communications Architecture</p>
+      <table class="compact"><thead><tr><th>Option</th><th style="width:18%">Score</th><th style="width:42%">Status</th></tr></thead><tbody>
+      <tr class="selrow"><td class="criterion">Relay-via-Orbiter</td><td>79.00%</td><td><span class="sel">&#9733; SELECTED</span></td></tr>
+      <tr><td>Direct-to-Earth Only</td><td>60.10%</td><td class="elim">Eliminated - strands PSR science (no Earth LOS)</td></tr>
+      <tr><td>Lander-as-Relay Hop</td><td>58.00%</td><td class="elim">Eliminated - PSR terrain breaks rover-lander LOS</td></tr>
+      </tbody></table>
+      <p class="subsection-heading" style="margin-top:16px">Trade B - Flight Computer</p>
+      <table class="compact"><thead><tr><th>Option</th><th style="width:18%">Score</th><th style="width:42%">Status</th></tr></thead><tbody>
+      <tr class="selrow"><td class="criterion">Radiation-Tolerant SBC + EDAC</td><td>90.00%</td><td><span class="sel">&#9733; SELECTED</span></td></tr>
+      <tr><td>Fully Radiation-Hardened</td><td>77.60%</td><td class="elim">Eliminated - unneeded margin, high cost/power</td></tr>
+      <tr><td>COTS Commercial SBC</td><td>58.00%</td><td class="elim">Eliminated - fails 30 krad radiation floor</td></tr>
+      </tbody></table>
+      <p class="subsection-heading" style="margin-top:16px">Trade C - Rover Antenna</p>
+      <table class="compact"><thead><tr><th>Option</th><th style="width:18%">Score</th><th style="width:42%">Status</th></tr></thead><tbody>
+      <tr class="selrow"><td class="criterion">Body-Fixed Medium-Gain (MGA)</td><td>89.50%</td><td><span class="sel">&#9733; SELECTED</span></td></tr>
+      <tr><td>Body-Fixed Low-Gain (LGA) Omni</td><td>81.10%</td><td class="elim">Eliminated - insufficient data rate</td></tr>
+      <tr><td>Steerable High-Gain (HGA)</td><td>55.70%</td><td class="elim">Eliminated - pointing mechanism vulnerable to dust/cold</td></tr>
+      </tbody></table>
+      <div class="fig"><svg viewBox="0 0 720 150" width="100%" role="img" aria-label="Earth contact availability over one lunar cycle">
+  <style>.t{font-family:Helvetica Neue,Arial;font-size:11px;fill:#1c1c1e}.lbl{font-family:Courier New;font-size:10px;fill:#475569}.cap{font-family:Helvetica Neue,Arial;font-size:10px;fill:#64748b}</style>
+  <text class="t" x="0" y="16" font-weight="700">One lunar cycle (29.5 days) at -83.21 deg S</text>
+  <!-- visible segment ~15.5 d -->
+  <rect x="0" y="32" width="378" height="30" fill="#334155"/>
+  <text class="lbl" x="12" y="51" fill="#f1f5f9">Earth visible (~15.5 d) - DTE available</text>
+  <!-- blackout ~14 d -->
+  <rect x="378" y="32" width="342" height="30" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text class="lbl" x="392" y="51">Earth blackout (~14 d) - relay required</text>
+  <!-- DTE row -->
+  <text class="t" x="0" y="88">Direct-to-Earth:</text>
+  <rect x="120" y="76" width="258" height="16" fill="#0f2747"/>
+  <rect x="378" y="76" width="342" height="16" fill="#f1f5f9" stroke="#cbd5e1" stroke-dasharray="3,3"/>
+  <text class="cap" x="392" y="88">PSR data stranded up to 14 days</text>
+  <!-- Relay row -->
+  <text class="t" x="0" y="120">Relay-via-orbiter:</text>
+  <rect x="120" y="108" width="600" height="16" fill="#0f2747"/>
+  <text class="cap" x="132" y="120" fill="#f1f5f9">continuous scheduled contact across the full cycle</text>
+</svg><div class="figcap"><b>Figure 4.</b> Earth-contact availability over one lunar cycle from JMARS line-of-sight geometry at the landing site. Direct-to-Earth loses contact during the blackout, stranding PSR science, while a relay maintains scheduled contact across the full cycle; the blackout lasts approximately 14 days.</div></div>
     </div>
 
     <div class="section">
@@ -349,14 +342,20 @@
     <div class="section">
       <div class="section-heading">1.5.7.3 &nbsp; CDH Subsystem Redundancy</div>
       <p>The flight computer is a block-redundant pair with a cold spare energized after a watchdog-triggered failover, because it is a single point of failure and the 29.5-day intermittent-contact mission allows no ground-commanded swap (NASA 2009). Storage applies error detection and correction and duplicates the highest-priority products until downlink is confirmed. The communications path is functionally redundant through the lander direct-to-Earth path and the relay path, and the internal data bus carries redundant routing on critical command and telemetry lines. On a confirmed critical fault the flight software enters safe mode, preserves state across the reset, records evidence, and fails over to the cold spare, returning the fault log at the next contact window.</p>
-      <div class="note"><span class="tag">Open items</span> &nbsp; CDH-01 clock accuracy and CDH-02 storage duration remain [TBR] pending the payload data-rate budget. Verification: LunarLinkBench (latency, storage), JMARS + Phipps et al. 2024 (radiation), software prototype/flatsat (command, fault, state).</div>
+      <div class="note"><span class="tag">Resolved open items</span> &nbsp; CDH-01 clock accuracy set to +/- 1 ms (oscillator <= 2 ppm, corrected each contact). CDH-02 storage set to >= 4 GB usable / 8 GB provisioned, retaining >= 336 h at the ~80 MB/day payload budget. Verification draws on JMARS contact and shielding geometry, the Phipps et al. 2024 dose maps, and the science-team measurement set defined in the MCR STM.</div>
     </div>
 
     <hr class="rule">
-    <p class="subnav"><a href="https://aryanputta.github.io/team15-mcr/">&#8592; Team 15 MCR</a> &nbsp;&#183;&nbsp; <a href="https://aryanputta.github.io/lunarlinkbench/">LunarLinkBench live simulation &#8594;</a></p>
-    <p style="font-size:11px;color:#777;font-family:'Helvetica Neue',Arial">Sources: CCSDS 211.0-B-5 (2013); CCSDS 133.0-B-2 (2020); NASA Fault Management Handbook (2009); NPR 7150.2 (2016); NASA Small Spacecraft State of the Art (2018); Phipps et al. (2024). Formatting for the master SRR: Arial 12, 1-inch margins.</p>
+    <p class="subnav"><a href="https://aryanputta.github.io/team15-mcr/">&#8592; Team 15 MCR</a></p>
+    <p style="font-size:11px;color:#777;font-family:'Helvetica Neue',Arial">Sources: Team 15 MCR (SU26); Christensen et al. 2026 (JMARS); Phipps et al. 2024; CCSDS 211.0-B-5 (2013); CCSDS 133.0-B-2 (2020); NASA Fault Management Handbook (2009); NPR 7150.2 (2016); NASA Small Spacecraft State of the Art (2018). Master SRR formatting: Arial 12, 1-inch margins.</p>
 
   </div>
 </div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base',
+    themeVariables: { fontFamily: 'Helvetica Neue, Arial, sans-serif', fontSize: '13px', lineColor: '#64748b', primaryColor: '#0f2747', primaryTextColor: '#f1f5f9', primaryBorderColor:'#0f2747', clusterBkg:'#f8fafc', clusterBorder:'#94a3b8' },
+    flowchart: { curve: 'basis', useMaxWidth: true } });
+</script>
 </body>
 </html>
