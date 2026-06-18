@@ -267,6 +267,7 @@ tr.selrow td { background:#eef6f0; }
         <tr><td class="criterion">Flight Software (hosted)</td><td>&#8212;</td><td>hosted on FC</td><td>&#8212;</td><td>5</td></tr>
         <tr class="selrow"><td class="criterion">Total Subsystem</td><td>1.6</td><td>&#8804; 0.20 x 0.15 x 0.10 stowed</td><td>18 (20 w/ margin)</td><td>5</td></tr>
         </tbody></table>
+        <div class="note"><span class="tag">For the 1.5.1 spacecraft summary table</span> &nbsp; CDH row &#8212; Mass 1.6 kg &#183; Envelope &#8804; 0.20 x 0.15 x 0.10 m (stowed) &#183; Max Power 18 W (20 W with margin).</div>
       </div>
     </div>
 
@@ -284,6 +285,7 @@ tr.selrow td { background:#eef6f0; }
       <tr><td class="criterion">CDH-08</td><td>CDH-03</td><td>Implement CCSDS Space Packet framing and Proximity-1 relay operation.</td><td>Inspection + Test</td></tr>
       <tr><td class="criterion">CDH-09</td><td>CDH-04</td><td>Employ watchdog timing and memory EDAC to detect and recover from single-event upsets.</td><td>Test + Analysis</td></tr>
       </tbody></table>
+      <div class="note"><span class="tag">Full matrix</span> &nbsp; The complete verification matrix with Rationale, Child requirement, and Req met? status (all TBR at SRR maturity) is maintained in the CDH requirements deliverable and pastes directly into the master SRR requirements table (columns: Req #, Requirement, Rationale, Parent, Child, Verification method, Req met?).</div>
       <div class="fig"><pre class="mermaid">flowchart LR
   SYS1["SYS-1<br/>Survive 1 lunar cycle"]
   CH1["CH-1<br/>Earth communication"]
@@ -356,6 +358,33 @@ tr.selrow td { background:#eef6f0; }
       <div class="section-heading">1.5.7.3 &nbsp; CDH Subsystem Redundancy</div>
       <p>The flight computer is a block-redundant pair with a cold spare energized after a watchdog-triggered failover, because it is a single point of failure and the 29.5-day intermittent-contact mission allows no ground-commanded swap (NASA 2009). Storage applies error detection and correction and duplicates the highest-priority products until downlink is confirmed. The communications path is functionally redundant through the lander direct-to-Earth path and the relay path, and the internal data bus carries redundant routing on critical command and telemetry lines. On a confirmed critical fault the flight software enters safe mode, preserves state across the reset, records evidence, and fails over to the cold spare, returning the fault log at the next contact window.</p>
       <div class="note"><span class="tag">Resolved open items</span> &nbsp; CDH-01 clock accuracy set to +/- 1 ms (oscillator <= 2 ppm, corrected each contact). CDH-02 storage set to >= 4 GB usable / 8 GB provisioned, retaining >= 336 h at the ~80 MB/day payload budget. Verification draws on JMARS contact and shielding geometry, the Phipps et al. 2024 dose maps, and the science-team measurement set defined in the MCR STM.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-heading">1.5.8 &nbsp; Interface Control (CDH Interfaces)</div>
+      <p>The CDH subsystem is the data hub of the spacecraft and defines interfaces with every other subsystem, as shown in Figure 5. It draws regulated power from the power subsystem, issues commands and setpoints to the mechanical mobility and thermal subsystems, collects time-tagged science data from the payload and health telemetry from each subsystem over the internal data bus, and exchanges command and telemetry frames with the communications subsystem for relay to Earth. The four primary flows are power inbound to the avionics, commands outbound from the flight computer, telemetry inbound to the flight computer, and science data inbound to storage. Each interface is governed by the command and telemetry dictionaries and is carried on the redundant critical command and telemetry paths described in Section 1.5.7.3.</p>
+      <div class="fig"><pre class="mermaid">flowchart TD
+  subgraph SC["Spacecraft Bus"]
+    direction TB
+    CDH["CDH<br/>flight computer + storage"]
+    PWR["Power Subsystem"]
+    THM["Thermal Subsystem"]
+    MECH["Mechanical / Mobility"]
+    PAY["Payload Instruments"]
+    COM["Communications"]
+  end
+  PWR -- "regulated power" --> CDH
+  CDH -- "commands" --> MECH
+  CDH -- "commands / setpoints" --> THM
+  PAY -- "science data" --> CDH
+  THM -- "health telemetry" --> CDH
+  MECH -- "health telemetry" --> CDH
+  CDH -- "command + telemetry frames" --> COM
+  classDef hub fill:#0f2747,stroke:#0f2747,color:#f1f5f9;
+  classDef n fill:#e2e8f0,stroke:#64748b,color:#1e293b;
+  class CDH hub;
+  class PWR,THM,MECH,PAY,COM n;
+  style SC fill:#f8fafc,stroke:#94a3b8,color:#475569;</pre><div class="figcap"><b>Figure 5.</b> CDH interface block diagram. The CDH subsystem (center) exchanges power, commands, telemetry, and science data with the five other spacecraft subsystems across the internal data bus.</div></div>
     </div>
 
     <hr class="rule">
