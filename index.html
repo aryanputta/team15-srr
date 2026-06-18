@@ -249,6 +249,14 @@ tr.selrow td { background:#eef6f0; }
   class STO store;
   style AV fill:#f8fafc,stroke:#94a3b8,color:#475569;</pre><div class="figcap"><b>Figure 1.</b> CDH command and data flow. Commands enter over RF (dashed) and are validated before execution; instrument data crosses the internal data bus (solid), is buffered under a priority policy, and is downlinked at the next scheduled contact window. The 48 h latency target is engineering-derived and remains TBR.</div></div>
       <div class="subsection">
+        <div class="subsection-heading">Subassembly Descriptions</div>
+        <p><b>Flight Computer and Onboard Processing.</b> Executes the flight software and acts as the central authority for state management, command sequencing, fault detection, and data scheduling. Key features are a radiation-tolerant processor protected by a watchdog timer and error-detecting and error-correcting (EDAC) memory. Major components are the single-board computer and processor, volatile working memory with EDAC, and non-volatile boot memory. It interfaces with the power subsystem for regulated power, with every subsystem through the internal data bus, and with the communications interface for command and telemetry exchange.</p>
+        <p><b>Data Storage.</b> Buffers science and engineering data between acquisition and the next downlink so no primary data is lost during PSR loss-of-contact. Key features are non-volatile mass memory sized to one full data-generation cycle and explicit priority classes that preserve the highest-value products under storage pressure. Major components are the non-volatile memory module and its EDAC controller. It interfaces with the flight computer, the payload, and the communications interface.</p>
+        <p><b>Communications Interface.</b> Accepts validated commands from the receiver and delivers telemetry and buffered science data to the transmitter, framing all traffic in the CCSDS Space Packet Protocol and supporting Proximity-1 for relay operation. Major components are the command and telemetry I/O card and protocol stack. It interfaces with the flight computer and the radio, and is detailed in Section 1.5.4.4.</p>
+        <p><b>Internal Data Bus.</b> Carries commands and data between the flight computer and every subsystem and instrument, with redundant routing on the critical command and telemetry paths. Major components are the bus controller and harness. It interfaces with all flight hardware and is captured formally in Section 1.5.8 Interface Control.</p>
+        <p><b>Flight Software Architecture.</b> Implements command handling, telemetry generation, state management, data handling, and fault management in a layered structure: a command-validation layer screens incoming traffic, a state manager preserves critical state across resets, and a fault-management layer drives autonomous safe-mode entry. It interfaces with all flight hardware through device drivers and with mission operations through the command and telemetry dictionaries.</p>
+      </div>
+      <div class="subsection">
         <div class="subsection-heading">Subsystem Mass, Volume, Power, and Technology Readiness</div>
         <p>Values below are flight-heritage estimates for SmallSat and CubeSat-class lunar avionics. Hardware rates TRL 6 to 7; the mission-specific flight software is TRL 5 because its integrated fault-management and autonomy configuration is not yet validated in a relevant environment, which sets the subsystem at TRL 5 (NASA 2018).</p>
         <table class="compact"><thead><tr><th>Subassembly</th><th>Mass (kg)</th><th>Dimensions (m)</th><th>Max Power (W)</th><th>TRL</th></tr></thead><tbody>
@@ -314,24 +322,28 @@ tr.selrow td { background:#eef6f0; }
       <tr><td>Body-Fixed Low-Gain (LGA) Omni</td><td>81.10%</td><td class="elim">Eliminated - insufficient data rate</td></tr>
       <tr><td>Steerable High-Gain (HGA)</td><td>55.70%</td><td class="elim">Eliminated - pointing mechanism vulnerable to dust/cold</td></tr>
       </tbody></table>
-      <div class="fig"><svg viewBox="0 0 720 150" width="100%" role="img" aria-label="Earth contact availability over one lunar cycle">
-  <style>.t{font-family:Helvetica Neue,Arial;font-size:11px;fill:#1c1c1e}.lbl{font-family:Courier New;font-size:10px;fill:#475569}.cap{font-family:Helvetica Neue,Arial;font-size:10px;fill:#64748b}</style>
-  <text class="t" x="0" y="16" font-weight="700">One lunar cycle (29.5 days) at -83.21 deg S</text>
-  <!-- visible segment ~15.5 d -->
-  <rect x="0" y="32" width="378" height="30" fill="#334155"/>
-  <text class="lbl" x="12" y="51" fill="#f1f5f9">Earth visible (~15.5 d) - DTE available</text>
-  <!-- blackout ~14 d -->
-  <rect x="378" y="32" width="342" height="30" fill="#e2e8f0" stroke="#94a3b8"/>
-  <text class="lbl" x="392" y="51">Earth blackout (~14 d) - relay required</text>
-  <!-- DTE row -->
-  <text class="t" x="0" y="88">Direct-to-Earth:</text>
-  <rect x="120" y="76" width="258" height="16" fill="#0f2747"/>
-  <rect x="378" y="76" width="342" height="16" fill="#f1f5f9" stroke="#cbd5e1" stroke-dasharray="3,3"/>
-  <text class="cap" x="392" y="88">PSR data stranded up to 14 days</text>
-  <!-- Relay row -->
-  <text class="t" x="0" y="120">Relay-via-orbiter:</text>
-  <rect x="120" y="108" width="600" height="16" fill="#0f2747"/>
-  <text class="cap" x="132" y="120" fill="#f1f5f9">continuous scheduled contact across the full cycle</text>
+      <div class="fig"><svg viewBox="0 0 720 340" width="100%" role="img" aria-label="Weighted trade scores">
+  <style>.t3{font-family:Helvetica Neue,Arial;font-size:12px;fill:#0f2747}.s3{font-family:Helvetica Neue,Arial;font-size:11px;fill:#1e293b}.n3{font-family:Courier New;font-size:10px;fill:#475569}</style>
+  <text class="t3" x="0" y="14" font-weight="700">Trade A - Communications architecture</text><text class="s3" x="0" y="43">Relay-via-Orbiter *</text><rect x="250" y="30" width="360" height="15" fill="#eef1f7"/><rect x="250" y="30" width="284" height="15" fill="#15467a"/><text class="n3" x="540" y="42">79.00%</text><text class="s3" x="0" y="65">Direct-to-Earth Only</text><rect x="250" y="52" width="360" height="15" fill="#eef1f7"/><rect x="250" y="52" width="216" height="15" fill="#cbd5e1"/><text class="n3" x="472" y="64">60.10%</text><text class="s3" x="0" y="87">Lander-as-Relay Hop</text><rect x="250" y="74" width="360" height="15" fill="#eef1f7"/><rect x="250" y="74" width="209" height="15" fill="#cbd5e1"/><text class="n3" x="465" y="86">58.00%</text><text class="t3" x="0" y="120" font-weight="700">Trade B - Flight computer</text><text class="s3" x="0" y="149">Radiation-Tolerant SBC + EDAC *</text><rect x="250" y="136" width="360" height="15" fill="#eef1f7"/><rect x="250" y="136" width="324" height="15" fill="#15467a"/><text class="n3" x="580" y="148">90.00%</text><text class="s3" x="0" y="171">Fully Radiation-Hardened</text><rect x="250" y="158" width="360" height="15" fill="#eef1f7"/><rect x="250" y="158" width="279" height="15" fill="#cbd5e1"/><text class="n3" x="535" y="170">77.60%</text><text class="s3" x="0" y="193">COTS Commercial SBC</text><rect x="250" y="180" width="360" height="15" fill="#eef1f7"/><rect x="250" y="180" width="209" height="15" fill="#cbd5e1"/><text class="n3" x="465" y="192">58.00%</text><text class="t3" x="0" y="226" font-weight="700">Trade C - Rover antenna</text><text class="s3" x="0" y="255">Body-Fixed Medium-Gain (MGA) *</text><rect x="250" y="242" width="360" height="15" fill="#eef1f7"/><rect x="250" y="242" width="322" height="15" fill="#15467a"/><text class="n3" x="578" y="254">89.50%</text><text class="s3" x="0" y="277">Low-Gain (LGA) Omni</text><rect x="250" y="264" width="360" height="15" fill="#eef1f7"/><rect x="250" y="264" width="292" height="15" fill="#cbd5e1"/><text class="n3" x="548" y="276">81.10%</text><text class="s3" x="0" y="299">Steerable High-Gain (HGA)</text><rect x="250" y="286" width="360" height="15" fill="#eef1f7"/><rect x="250" y="286" width="201" height="15" fill="#cbd5e1"/><text class="n3" x="457" y="298">55.70%</text><text x="0" y="330" font-family="Helvetica Neue,Arial" font-size="10" fill="#64748b">* selected option</text></svg><div class="figcap"><b>Figure 3.</b> Weighted trade scores (percentage method, 0/1/5/10 grades, weights summing to 100 percent). The selected option leads each trade: relay-via-orbiter at 79.00 percent, radiation-tolerant SBC at 90.00 percent, and body-fixed medium-gain antenna at 89.50 percent.</div></div>
+      <div class="fig"><svg viewBox="0 0 720 185" width="100%" role="img" aria-label="Earth contact availability over one lunar cycle">
+  <style>
+    .h4{font-family:Helvetica Neue,Arial;font-size:13px;fill:#0f2747;font-weight:700}
+    .l4{font-family:Helvetica Neue,Arial;font-size:12px;fill:#1e293b;font-weight:700}
+    .w4{font-family:Helvetica Neue,Arial;font-size:11px;fill:#ffffff;font-weight:600}
+    .a4{font-family:Courier New;font-size:10px;fill:#64748b}
+    .g4{font-family:Helvetica Neue,Arial;font-size:11px;fill:#1e293b}
+  </style>
+  <text class="h4" x="0" y="15">Earth contact availability over one lunar cycle (29.5 d) at 83.21 S</text>
+  <rect x="0" y="26" width="13" height="13" fill="#15467a"/><text class="g4" x="18" y="37">Contact available</text>
+  <rect x="165" y="26" width="13" height="13" fill="#d97706"/><text class="g4" x="183" y="37">No Earth contact (blackout)</text>
+  <text class="l4" x="0" y="74">Direct-to-Earth</text>
+  <rect x="150" y="58" width="289" height="26" fill="#15467a"/><text class="w4" x="160" y="75">visible ~15.5 d</text>
+  <rect x="439" y="58" width="261" height="26" fill="#d97706"/><text class="w4" x="449" y="75">data stranded up to 14 d</text>
+  <text class="l4" x="0" y="120">Relay-via-orbiter</text>
+  <rect x="150" y="104" width="550" height="26" fill="#15467a"/><text class="w4" x="160" y="121">continuous scheduled contact across the full cycle</text>
+  <line x1="150" y1="146" x2="700" y2="146" stroke="#cbd5e1"/>
+  <line x1="439" y1="142" x2="439" y2="150" stroke="#94a3b8"/>
+  <text class="a4" x="150" y="162">0 d</text><text class="a4" x="415" y="162">15.5 d</text><text class="a4" x="668" y="162">29.5 d</text>
 </svg><div class="figcap"><b>Figure 4.</b> Earth-contact availability over one lunar cycle from JMARS line-of-sight geometry at the landing site. Direct-to-Earth loses contact during the blackout, stranding PSR science, while a relay maintains scheduled contact across the full cycle; the blackout lasts approximately 14 days.</div></div>
     </div>
 
