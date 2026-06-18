@@ -186,7 +186,8 @@
       .document { border: none; box-shadow: none; }
     }
 .fig { margin: 20px 0 8px; border:1px solid var(--rule); background:var(--page); padding:18px 18px 10px; }
-.fig .mermaid { display:flex; justify-content:center; }
+.fig .mermaid { display:flex; justify-content:center; overflow-x:auto; }
+.fig .mermaid svg { max-width:100%; height:auto; }
 .figcap { font-family:'Helvetica Neue',Arial,sans-serif; font-size:11px; color:var(--muted); line-height:1.5; margin-top:10px; }
 .figcap b { color:var(--accent); }
 .sel { font-family:'Helvetica Neue',Arial,sans-serif; font-weight:700; color:#0a5c34; font-size:11px; }
@@ -237,7 +238,7 @@ tr.selrow td { background:#eef6f0; }
   INST --> STO
   STO --> TLM
   FC --> TLM
-  TLM -. "downlink within 48 h" .-> GS
+  TLM -. "downlink at next contact" .-> GS
   classDef ext fill:#e2e8f0,stroke:#64748b,color:#1e293b;
   classDef core fill:#0f2747,stroke:#0f2747,color:#f1f5f9;
   classDef node fill:#334155,stroke:#1e293b,color:#f1f5f9;
@@ -246,7 +247,7 @@ tr.selrow td { background:#eef6f0; }
   class FC,CMD core;
   class RX,BUS,INST,TLM node;
   class STO store;
-  style AV fill:#f8fafc,stroke:#94a3b8,color:#475569;</pre><div class="figcap"><b>Figure 1.</b> CDH command and data flow. Commands enter over RF (dashed) and are validated before execution; instrument data crosses the internal data bus (solid), is buffered under a priority policy, and is downlinked within the 48-hour requirement.</div></div>
+  style AV fill:#f8fafc,stroke:#94a3b8,color:#475569;</pre><div class="figcap"><b>Figure 1.</b> CDH command and data flow. Commands enter over RF (dashed) and are validated before execution; instrument data crosses the internal data bus (solid), is buffered under a priority policy, and is downlinked at the next scheduled contact window. The 48 h latency target is engineering-derived and remains TBR.</div></div>
       <div class="subsection">
         <div class="subsection-heading">Subsystem Mass, Volume, Power, and Technology Readiness</div>
         <p>Values below are flight-heritage estimates for SmallSat and CubeSat-class lunar avionics. Hardware rates TRL 6 to 7; the mission-specific flight software is TRL 5 because its integrated fault-management and autonomy configuration is not yet validated in a relevant environment, which sets the subsystem at TRL 5 (NASA 2018).</p>
@@ -270,7 +271,7 @@ tr.selrow td { background:#eef6f0; }
       <tr><td class="criterion">CDH-03</td><td>CH-1</td><td>Validate every uplinked command for authentication, format, sequence, and timing before execution; reject and log non-conforming commands.</td><td>Test</td></tr>
       <tr><td class="criterion">CDH-04</td><td>SYS-1</td><td>Autonomously detect defined faults and command entry to a defined safe mode without ground intervention.</td><td>Test + Demonstration</td></tr>
       <tr><td class="criterion">CDH-05</td><td>SYS-1</td><td>Remain operable after a total ionizing dose of >= 30 krad (Si) over the 29.5-day mission.</td><td>Analysis (JMARS + Phipps 2024); Test later</td></tr>
-      <tr><td class="criterion">CDH-06</td><td>CDH-02</td><td>Retrieve and downlink buffered science data in priority order so all primary science returns within 48 h under nominal contact.</td><td>Analysis (JMARS contact-window schedule)</td></tr>
+      <tr><td class="criterion">CDH-06</td><td>CDH-02</td><td>Retrieve and downlink buffered science data in priority order so all primary science returns within the engineering-derived 48 h target (TBR) under nominal contact.</td><td>Analysis (JMARS contact-window schedule)</td></tr>
       <tr><td class="criterion">CDH-07</td><td>SYS-1</td><td>Preserve critical spacecraft state across processor resets and safe-mode transitions.</td><td>Test</td></tr>
       <tr><td class="criterion">CDH-08</td><td>CDH-03</td><td>Implement CCSDS Space Packet framing and Proximity-1 relay operation.</td><td>Inspection + Test</td></tr>
       <tr><td class="criterion">CDH-09</td><td>CDH-04</td><td>Employ watchdog timing and memory EDAC to detect and recover from single-event upsets.</td><td>Test + Analysis</td></tr>
@@ -355,7 +356,7 @@ tr.selrow td { background:#eef6f0; }
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true, theme: 'base',
     themeVariables: { fontFamily: 'Helvetica Neue, Arial, sans-serif', fontSize: '13px', lineColor: '#64748b', primaryColor: '#0f2747', primaryTextColor: '#f1f5f9', primaryBorderColor:'#0f2747', clusterBkg:'#f8fafc', clusterBorder:'#94a3b8' },
-    flowchart: { curve: 'basis', useMaxWidth: true } });
+    flowchart: { curve: 'basis', useMaxWidth: true, htmlLabels: true, nodeSpacing: 45, rankSpacing: 55, padding: 10, wrappingWidth: 220 } });
 </script>
 </body>
 </html>
